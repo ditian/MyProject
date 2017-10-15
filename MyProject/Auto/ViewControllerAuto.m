@@ -6,7 +6,7 @@
 
 @interface ViewControllerAuto ()
 
-@property (nonatomic) StackViewAuto *header;
+@property (nonatomic) ViewAuto *header;
 @property (nonatomic) StackViewAuto *body;
 @property (nonatomic) StackViewAuto *footer;
 
@@ -19,19 +19,17 @@
     self.view.backgroundColor = [UIColor grayColor];
     
     // Header
-    StackViewAuto *header = [[StackViewAuto alloc] initWithBackgroundColor:[UIColor whiteColor]];
+    ViewAuto *header = [[ViewAuto alloc] init];
+    header.backgroundColor = [UIColor whiteColor];
+    header.useAutoLayout = YES;
     self.header = header;
-    header.axis = UILayoutConstraintAxisVertical;
-    header.distribution = UIStackViewDistributionEqualSpacing;
-    header.alignment = UIStackViewAlignmentLeading;
-    header.spacing = 5;
 
     [self.view addSubview:header];
 
     [header.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor].active = YES;
     [header.topAnchor constraintEqualToAnchor:self.view.topAnchor constant:20].active = YES;
     header.intrinsicWidth = CGRectGetWidth(self.view.frame);
-    header.intrinsicHeight = 0;
+    //header.intrinsicHeight = 0;
 
     // Body
     StackViewAuto *body = [[StackViewAuto alloc] initWithBackgroundColor:[UIColor whiteColor]];
@@ -70,23 +68,37 @@
     ViewAuto *child1 = [[ViewAuto alloc] init];
     child1.backgroundColor = [UIColor cyanColor];
     child1.useAutoLayout = YES;
-    child1.intrinsicWidth = CGRectGetWidth(self.header.frame);
+    
+    [self.header addSubview:child1];
+    
+    [child1.topAnchor constraintEqualToAnchor:self.header.topAnchor].active = YES;
+    [child1.leadingAnchor constraintEqualToAnchor:self.header.leadingAnchor constant:35].active = YES;
+    [child1.trailingAnchor constraintEqualToAnchor:self.header.trailingAnchor].active = YES;
     child1.intrinsicHeight = 30;
-    [self.header addArrangedSubview:child1];
     
     ViewAuto *child2 = [[ViewAuto alloc] init];
     child2.backgroundColor = [UIColor purpleColor];
     child2.useAutoLayout = YES;
-    child2.intrinsicWidth = CGRectGetWidth(self.header.frame);
+    
+    [self.header addSubview:child2];
+    
+    [child2.topAnchor constraintEqualToAnchor:child1.bottomAnchor constant:5].active = YES;
+    [child2.leadingAnchor constraintEqualToAnchor:self.header.leadingAnchor constant:55].active = YES;
+    [child2.trailingAnchor constraintEqualToAnchor:self.header.trailingAnchor].active = YES;
     child2.intrinsicHeight = 50;
-    [self.header addArrangedSubview:child2];
-
+    
     ViewAuto *child3 = [[ViewAuto alloc] init];
     child3.backgroundColor = [UIColor orangeColor];
     child3.useAutoLayout = YES;
-    child3.intrinsicWidth = CGRectGetWidth(self.header.frame);
+    
+    [self.header addSubview:child3];
+    
+    [child3.topAnchor constraintEqualToAnchor:child2.bottomAnchor constant:5].active = YES;
+    [child3.leadingAnchor constraintEqualToAnchor:self.header.leadingAnchor constant:15].active = YES;
+    [child3.trailingAnchor constraintEqualToAnchor:self.header.trailingAnchor].active = YES;
+    [child3.bottomAnchor constraintEqualToAnchor:self.header.bottomAnchor].active = YES;
     child3.intrinsicHeight = 70;
-    [self.header addArrangedSubview:child3];
+    
     
     dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, 1 * NSEC_PER_SEC);
     dispatch_after(delayTime, dispatch_get_main_queue(), ^(void){
